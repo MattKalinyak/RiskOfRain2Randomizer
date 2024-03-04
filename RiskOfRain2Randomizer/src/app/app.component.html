@@ -1,0 +1,8 @@
+<app-top-bar></app-top-bar>
+
+<div class="cards" *ngFor="let player of players">
+  <app-player-cards [username]="player.username" [name]="player.name"></app-player-cards>
+</div>
+
+
+<!-- <router-outlet></router-outlet> -->

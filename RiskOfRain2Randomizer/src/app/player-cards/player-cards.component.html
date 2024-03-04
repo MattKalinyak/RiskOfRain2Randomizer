@@ -1,0 +1,13 @@
+<mat-card class="player-card">
+  <mat-card-header>
+    <mat-card-title>{{ username }}</mat-card-title>
+    <mat-card-subtitle>{{ name }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="survivorImage" alt="Photo of a Shiba Inu">
+  <mat-card-content>
+    <h2>{{ survivorName }}</h2>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="rollRandomSurvivor()" color="accent" [disabled]="blockRoll()">{{ buttonText }}</button>
+  </mat-card-actions>
+</mat-card>
