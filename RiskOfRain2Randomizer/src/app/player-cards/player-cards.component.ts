@@ -41,10 +41,6 @@ export class PlayerCards implements OnInit, OnDestroy {
 
     rollRandomSurvivor() {
         let index = -1;
-
-        for (let i = 0; i < this.survivorsService.survivors.length; i++) {
-            this.setSurvivor(this.survivorsService.survivors[i]);
-        }
         
         do {
             index = this.randomIntFromInterval(0, this.survivorsService.survivors.length);
@@ -56,17 +52,13 @@ export class PlayerCards implements OnInit, OnDestroy {
         this.setButtonText();
     }
 
-    setSurvivor(survivor: Survivor) {
-        this.survivorImage = survivor.imageSrc;
-        this.survivorName = survivor.name;
-    }
-
     randomIntFromInterval(min: number, max:number): number { 
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
-    blockRoll(): boolean {
-        return this.rollCount >= 2;
+    setSurvivor(survivor: Survivor) {
+        this.survivorImage = survivor.imageSrc;
+        this.survivorName = survivor.name;
     }
 
     setButtonText(): void {
@@ -76,4 +68,10 @@ export class PlayerCards implements OnInit, OnDestroy {
             this.buttonText = "Re-Roll";
         } 
     }
+
+    blockRoll(): boolean {
+        return this.rollCount >= 2;
+    }
+
+    
 }
