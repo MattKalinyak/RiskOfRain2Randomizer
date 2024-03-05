@@ -1,3 +1,5 @@
 <mat-toolbar color="primary">
     <span>Risk of Rain 2 Randomizer</span>
+    <span class="spacer"></span>
+    <button mat-flat-button (click)="rollForAllPlayers()" color="accent" [disabled]="buttonDisabled">Roll All</button>
 </mat-toolbar>

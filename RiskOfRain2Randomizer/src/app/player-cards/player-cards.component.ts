@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { Observable, Subscription } from 'rxjs';
 import { Survivor } from '../model/survivor.model';
 import { SurvivorsService } from '../services/survivors.service';
 
@@ -11,14 +12,18 @@ import { SurvivorsService } from '../services/survivors.service';
   standalone: true,
   imports: [MatCardModule, MatButtonModule],
 })
-export class PlayerCards {
+export class PlayerCards implements OnInit, OnDestroy {
     @Input() username: string = 'username';
     @Input() name: string = 'name';
+
+    @Input() rollEvent!: Observable<void>;
+    rollEventsSubscription!: Subscription;
 
     survivorImage: string = "../../assets/Radar_Scanner.webp"
     survivorName: string = "Roll to find out";
 
     rollCount: number = 0;
+    currentIndex: number = -1;
 
     buttonText: string = "Roll";
 
@@ -26,15 +31,27 @@ export class PlayerCards {
         console.log(survivorsService.survivors);
     }
 
+    ngOnInit(): void {
+        this.rollEventsSubscription = this.rollEvent.subscribe(() => this.rollRandomSurvivor());
+    }
+
+    ngOnDestroy(): void {
+        this.rollEventsSubscription.unsubscribe();
+    }
+
     rollRandomSurvivor() {
-        // setInterval()
+        let index = -1;
+
         for (let i = 0; i < this.survivorsService.survivors.length; i++) {
             this.setSurvivor(this.survivorsService.survivors[i]);
         }
-
-        let index = this.randomIntFromInterval(0, this.survivorsService.survivors.length);
-        this.setSurvivor(this.survivorsService.survivors[index])
-
+        
+        do {
+            index = this.randomIntFromInterval(0, this.survivorsService.survivors.length);
+            this.setSurvivor(this.survivorsService.survivors[index]);
+        } while (index === this.currentIndex)
+        
+        this.currentIndex = index;
         this.rollCount++;
         this.setButtonText();
     }
